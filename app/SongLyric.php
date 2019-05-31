@@ -185,6 +185,11 @@ class SongLyric extends Model
                     ->using(SongbookRecord::class);
     }
 
+    public function metadata_items() : HasMany
+    {
+        return $this->hasMany(MetadataItemSongLyric::class);
+    }
+
     public function scopeTranslations($query)
     {
         return $query->where('type', '!=', 0);

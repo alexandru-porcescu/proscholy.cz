@@ -16,7 +16,7 @@ class CreateMetadataTypesTable extends Migration
         Schema::create('metadata_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string("name");
-            $table->smallInteger("data_type", false, true);
+            $table->smallInteger("data_type", false, true); // unsigned
             $table->boolean("for_song_lyrics")->default(false);
             $table->boolean("for_authors")->default(false);
             $table->boolean("for_externals")->default(false);
