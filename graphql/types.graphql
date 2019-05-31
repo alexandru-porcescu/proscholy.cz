@@ -19,6 +19,7 @@ type Author {
     files: [File] @belongsToMany
     members: [Author] @belongsToMany
     memberships: [Author] @belongsToMany
+    metadata_items: [MetadataItemAuthor] @hasMany
 }
 
 type Song {
