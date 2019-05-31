@@ -12,6 +12,7 @@ use Spatie\PdfToText\Pdf as PdfToText;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 use App\Interfaces\ISource;
 
@@ -186,6 +187,11 @@ class File extends Model implements ISource
     public function song_lyric() : BelongsTo
     {
         return $this->belongsTo(SongLyric::class);
+    }
+
+    public function metadata_items() : HasMany
+    {
+        return $this->hasMany(MetadataItemFile::class);
     }
 
     // IMPLEMENTING INTERFACE ISOURCE

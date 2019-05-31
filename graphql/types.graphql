@@ -53,6 +53,7 @@ type SongLyric {
     siblings: [SongLyric] @with(relation: "song") @method(name: "getSiblings")
     trashed: Boolean @method(name: "trashed")
     only_regenschori: Boolean
+    metadata_items: [MetadataItemSongLyric] @hasMany
 }
 
 type External {
@@ -65,6 +66,7 @@ type External {
     song_lyric: SongLyric @belongsTo
     url: String
     media_id: String
+    metadata_items: [MetadataItemExternal] @hasMany
 }
 
 type File {
@@ -81,6 +83,7 @@ type File {
     description: String
     name: String
     filename: String
+    metadata_items: [MetadataItemFile] @hasMany
 }
 
 type Tag {
@@ -110,4 +113,42 @@ type SongbookRecord {
     placeholder: String @field(resolver: "App\\GraphQL\\Types\\SongbookRecordType@placeholder")
     song_lyric: SongLyric @field(resolver: "App\\GraphQL\\Types\\SongbookRecordType@song_lyric")
     songbook: Songbook @field(resolver: "App\\GraphQL\\Types\\SongbookRecordType@songbook")
+}
+
+type MetadataType {
+    id: ID!
+    name: String!
+    data_type: Int!
+    for_song_lyrics: Boolean
+    for_authors: Boolean
+    for_externals: Boolean
+    for_files: Boolean
+}
+
+type MetadataItemSongLyric {
+    id: ID!
+    value: String
+    song_lyric: SongLyric!
+    metadata_type: MetadataType!
+}
+
+type MetadataItemAuthor {
+    id: ID!
+    value: String
+    song_lyric: Author!
+    metadata_type: MetadataType!
+}
+
+type MetadataItemExternal {
+    id: ID!
+    value: String
+    song_lyric: External!
+    metadata_type: MetadataType!
+}
+
+type MetadataItemFile {
+    id: ID!
+    value: String
+    song_lyric: File!
+    metadata_type: MetadataType!
 }

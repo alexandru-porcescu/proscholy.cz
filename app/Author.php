@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Log;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Author
@@ -128,6 +128,11 @@ class Author extends Model
     public function files() : BelongsToMany
     {
         return $this->belongsToMany(File::class);
+    }
+
+    public function metadata_items() : HasMany
+    {
+        return $this->hasMany(MetadataItemAuthor::class);
     }
 
     public function getTypeStringAttribute()
