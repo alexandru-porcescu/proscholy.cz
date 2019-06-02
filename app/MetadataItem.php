@@ -4,12 +4,17 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-abstract class MetadataItem extends Model
+class MetadataItem extends Model
 {
-    protected $fillable = ["value", "metadata_type_id"];
+    protected $fillable = ["value", "metadata_type_id", "model_class"];
 
     public function metadata_type()
     {
         return $this->belongsTo(MetadataType::class);
     }
+
+    // public function model()
+    // {
+    //     return $this->belongsTo(SongLyric::class);
+    // }
 }

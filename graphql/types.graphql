@@ -126,10 +126,11 @@ type MetadataType {
     for_files: Boolean
 }
 
-type MetadataItemSongLyric {
+type MetadataItem {
     id: ID!
     value: String
-    song_lyric: SongLyric!
+    model_id: ID!
+    model_type: String!
     metadata_type: MetadataType!
 }
 
