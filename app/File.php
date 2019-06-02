@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 use App\Interfaces\ISource;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * App\File
@@ -189,9 +190,9 @@ class File extends Model implements ISource
         return $this->belongsTo(SongLyric::class);
     }
 
-    public function metadata_items() : HasMany
+    public function metadata_items() : MorphMany
     {
-        return $this->hasMany(MetadataItemFile::class);
+        return $this->morphMany(MetadataItem::class, "model");
     }
 
     // IMPLEMENTING INTERFACE ISOURCE

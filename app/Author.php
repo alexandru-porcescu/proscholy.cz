@@ -10,6 +10,7 @@ use Log;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Venturecraft\Revisionable\RevisionableTrait;
 
@@ -134,9 +135,9 @@ class Author extends Model
         return $this->belongsToMany(File::class);
     }
 
-    public function metadata_items() : HasMany
+    public function metadata_items() : MorphMany
     {
-        return $this->hasMany(MetadataItemAuthor::class);
+        return $this->morphMany(MetadataItem::class, "model");
     }
 
     public function getTypeStringAttribute()

@@ -19,7 +19,7 @@ type Author {
     files: [File] @belongsToMany
     members: [Author] @belongsToMany
     memberships: [Author] @belongsToMany
-    metadata_items: [MetadataItemAuthor] @hasMany
+    metadata_items: [MetadataItem] @hasMany
 }
 
 type Song {
@@ -54,7 +54,7 @@ type SongLyric {
     siblings: [SongLyric] @with(relation: "song") @method(name: "getSiblings")
     trashed: Boolean @method(name: "trashed")
     only_regenschori: Boolean
-    metadata_items: [MetadataItemSongLyric] @hasMany
+    metadata_items: [MetadataItem] @hasMany
 }
 
 type External {
@@ -67,7 +67,7 @@ type External {
     song_lyric: SongLyric @belongsTo
     url: String
     media_id: String
-    metadata_items: [MetadataItemExternal] @hasMany
+    metadata_items: [MetadataItem] @hasMany
 }
 
 type File {
@@ -84,7 +84,7 @@ type File {
     description: String
     name: String
     filename: String
-    metadata_items: [MetadataItemFile] @hasMany
+    metadata_items: [MetadataItem] @hasMany
 }
 
 type Tag {
@@ -131,26 +131,5 @@ type MetadataItem {
     value: String
     model_id: ID!
     model_type: String!
-    metadata_type: MetadataType!
-}
-
-type MetadataItemAuthor {
-    id: ID!
-    value: String
-    song_lyric: Author!
-    metadata_type: MetadataType!
-}
-
-type MetadataItemExternal {
-    id: ID!
-    value: String
-    song_lyric: External!
-    metadata_type: MetadataType!
-}
-
-type MetadataItemFile {
-    id: ID!
-    value: String
-    song_lyric: File!
     metadata_type: MetadataType!
 }

@@ -49,10 +49,7 @@ type Query {
     song_lyric(id: ID! @eq): SongLyric @find
     songbook(id: ID! @eq): Songbook @find
     metadata_type(id: ID! @eq): MetadataType @find
-    metadata_item_song_lyric(id: ID! @eq): MetadataItemSongLyric @find
-    metadata_item_author(id: ID! @eq): MetadataItemAuthor @find
-    metadata_item_external(id: ID! @eq): MetadataItemExternal @find
-    metadata_item_file(id: ID! @eq): MetadataItemFile @find
+    metadata_item(id: ID! @eq): MetadataItem @find
 }
 
 type Mutation @group(middleware: ["auth:api"]) {

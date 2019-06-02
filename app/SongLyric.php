@@ -18,6 +18,7 @@ use App\Helpers\ChordSign;
 use App\Helpers\ChordQueue;
 
 use Venturecraft\Revisionable\RevisionableTrait;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * App\SongLyric
@@ -191,9 +192,9 @@ class SongLyric extends Model
                     ->using(SongbookRecord::class);
     }
 
-    public function metadata_items() : HasMany
+    public function metadata_items() : MorphMany
     {
-        return $this->hasMany(MetadataItemSongLyric::class);
+        return $this->morphMany(MetadataItem::class, "model");
     }
 
     public function scopeTranslations($query)

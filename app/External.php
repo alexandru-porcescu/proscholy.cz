@@ -13,6 +13,7 @@ use App\Interfaces\ISource;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * App\External
@@ -233,9 +234,9 @@ class External extends Model implements ISource
         return $this->belongsTo(SongLyric::class);
     }
 
-    public function metadata_items() : HasMany
+    public function metadata_items() : MorphMany
     {
-        return $this->hasMany(MetadataItemExternal::class);
+        return $this->morphMany(MetadataItem::class, "model");
     }
 
     public function scopeRestricted($query)
