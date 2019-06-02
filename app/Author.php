@@ -10,6 +10,8 @@ use Log;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Venturecraft\Revisionable\RevisionableTrait;
 
 /**
  * App\Author
@@ -46,7 +48,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Author extends Model
 {
     // Laravel Scout Trait used for full-text searching
-    use Searchable;
+    use Searchable, RevisionableTrait;
+    protected $revisionCreationsEnabled = true;
+    
     protected $fillable = ['name', 'description', 'email', 'url', 'type'];
 
     private $type_string_values
