@@ -12,16 +12,22 @@ fragment AuthorFillableFragment on Author {
       name
     }
     song_lyrics {
-        id
-        name
+      id
+      name
+    }
+    externals {
+      id
+      url
+      public_name
+    }
+    files {
+      id
+      public_name
+    }
+    metadata_items{
+      value
+      metadata_type {
+        data_type
       }
-      externals {
-        id
-        url
-        public_name
-      }
-      files {
-        id
-        public_name
-      }
+    }
 }

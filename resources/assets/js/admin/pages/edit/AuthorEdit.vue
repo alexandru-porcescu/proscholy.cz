@@ -66,6 +66,26 @@
             class="text-none"
             @click="goToAdminPage('file/' + file.id + '/edit')"
           >{{ file.public_name }}</v-btn>
+
+
+          <v-layout row wrap v-for="(metadata_item, i) in model.metadata_items || []" :key="i">
+            <v-flex xs4>
+              <v-select
+                v-model="metadata_item.metadata_type"
+                :items="medatata_types"
+                item-text="name"
+                return-object
+                label="Typ"
+              ></v-select>
+            </v-flex>
+            <v-flex xs2>
+              <v-text-field label="Hodnota" required v-model="metadata_item.value"></v-text-field>
+            </v-flex>
+            <v-flex xs2>
+              <!-- <v-text-field label="Číslo písně" required v-model="record.number"></v-text-field> -->
+              <v-btn color="error" outline @click="removeMetadataItem(i)">Odstranit</v-btn>
+            </v-flex>
+          </v-layout>
         </v-flex>
       </v-layout>
       <v-btn @click="submit" :disabled="!isDirty">Uložit</v-btn>
@@ -121,6 +141,16 @@ const FETCH_AUTHORS = gql`
   }
 `;
 
+// todo: filter out metadata types only for authors etc
+const FETCH_METADATA_TYPES = gql`
+  query { 
+    metadata_types() {
+      name
+      data_type
+    }
+  }
+`;
+
 
 export default {
   props: ["preset-id"],
@@ -143,7 +173,8 @@ export default {
         externals: [],
         files: [],
         members: [],
-        memberships: []
+        memberships: [],
+        metadata_items: []
       },
       type_values: [],
       is_deleted: false
@@ -250,6 +281,25 @@ export default {
             this.$validator.errors.add({ field: key, msg: value });
           }
         });
+    },
+
+    removeMetadataItem(i) {
+      let value = this.model.metadata_items[i].value;
+      // if (value) {
+      //   // not empty
+
+      //   if (
+      //     !confirm(
+      //       "Opravdu chcete smazat záznam písničky ze zpěvníku " +
+      //         name +
+      //         "? (Změny se projeví až po uložení písničky)"
+      //     )
+      //   ) {
+      //     return;
+      //   }
+      // }
+
+      this.$delete(this.model.metadata_items, i);
     },
 
     // getModelsToCreateBelongsToMany(models){

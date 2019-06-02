@@ -6,6 +6,7 @@ input UpdateAuthorInput {
     type: Int!
     description: String
     members: SyncAuthorsRelation
+    metadata_items: SyncMetadataItemsRelation
 }
 
 input UpdateExternalInput {
@@ -127,4 +128,14 @@ input SyncSongbookRecordForSongLyricInput {
   songbook_id: ID!
   number: String
   placeholder: String
+}
+
+input SyncMetadataItemsRelation {
+  create: [CreateMetadataItemInput!]
+  sync: [ID!]
+}
+
+input CreateMetadataItemInput {
+  value: String
+  metadata_type_id: ID!
 }
