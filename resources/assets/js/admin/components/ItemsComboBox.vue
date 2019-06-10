@@ -3,7 +3,7 @@
     v-model="internalValue"
     :filter="filter"
     :hide-no-data="!search"
-    :items="items"
+    :items="allItems"
     :search-input.sync="search"
     item-text="name"
     hide-selected
@@ -26,7 +26,7 @@
         small
       >
         <span class="pr-2">{{ item.name }}</span>
-        <v-icon small @click="parent.selectItem(item)">close</v-icon>
+        <v-icon small @click="removeItem(item, parent)">close</v-icon>
       </v-chip>
     </template>
     <template v-slot:item="{ index, item }">
@@ -67,9 +67,9 @@ export default {
     editing: null,
     index: -1,
     search: null,
-    items: [{ header: "" }]
+    createdItems: []
   }),
-
+  
   computed: {
     internalValue: {
       get() {
@@ -78,38 +78,53 @@ export default {
       set(val) {
         this.$emit("input", val);
       }
-    }
-  },
+    },
 
-  mounted(){
-    this.items[0].header = this.headerLabel;
+    allItems() {
+      if (this.pItems)
+        return this.pItems.concat(this.createdItems);
+
+      return [];
+    }
   },
 
   watch: {
     internalValue(val, prev) {
       if (!val) return;
-      if(!Array.isArray(val)) return;
 
-      if (val.length === prev.length) return;
-
-      // fix when the search string remained after selecting an item
-      this.search = null;
-
-      this.internalValue = val.map(v => {
-        if (typeof v === "string") {
-          v = {
-            name: v
+      const handleNewItem = (item) => {
+        if (typeof item === "string") {
+          item = {
+            name: item
           };
 
-          this.items.push(v);
+          this.createdItems.push(item);
         }
 
-        return v;
-      });
-    },
+        return item;
+      }
 
-    pItems(val, prev) {
-        this.items = this.items.concat(this.pItems);
+      if (Array.isArray(val)) {
+        if (val.length === prev.length) return;
+        // fix when the search string remained after selecting an item
+        this.search = null;
+
+        this.internalValue = val.map(handleNewItem);
+      } else {
+        this.internalValue = handleNewItem(val);
+      }
+
+      // this.internalValue = val.map(v => {
+      //   if (typeof v === "string") {
+      //     v = {
+      //       name: v
+      //     };
+
+      //     this.createdItems.push(v);
+      //   }
+
+      //   return v;
+      // });
     }
   },
 
@@ -145,6 +160,15 @@ export default {
         } else {
             return `green lighten-3`;
         }
+    },
+
+    removeItem(item, parent) {
+      if (this.multiple) {
+        parent.selectItem(item);
+      }
+      else {
+        this.internalValue = null;
+      }
     }
   }
 };

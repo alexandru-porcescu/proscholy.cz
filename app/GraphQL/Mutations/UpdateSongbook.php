@@ -6,8 +6,10 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Nuwave\Lighthouse\Execution\ErrorBuffer;
 
+use Validator;
 use App\Songbook;
 use App\SongLyric;
+use App\Song;
 
 class UpdateSongbook
 {
@@ -36,7 +38,6 @@ class UpdateSongbook
             foreach ($input["records"]["sync"] as $record) {
                 $syncModels[$record["song_lyric_id"]] = [
                     'number' => $record["number"],
-                    'placeholder' => $record["placeholder"],
                 ];
             }
             $songbook->records()->sync($syncModels);
@@ -46,19 +47,19 @@ class UpdateSongbook
             foreach ($input["records"]["create"] as $record) {
                 $validator = Validator::make(['name' => $record["song_lyric_name"]], ['name' => 'unique:song_lyrics'], ['unique' => 'Jméno písně už je obsazené'], $validatorCustomAttributes);
                 
+                // \Log::info($record);
+
                 if (!$validator->fails()){
                     $song       = Song::create(['name' => $record["song_lyric_name"]]);
                     $song_lyric = SongLyric::create([
                         'name' => $record["song_lyric_name"],
                         'song_id' => $song->id,
                     ]);
-                }
 
-                $songbook->records()->create([
-                    'song_lyric_id' => $song_lyric->id,
-                    'number' => $record["number"],
-                    'placeholder' => $record["placeholder"],
-                ]);
+                    $songbook->records()->attach([$song_lyric->id => [
+                        'number' => $record["number"],
+                    ]]);
+                }
             }
         }
         $songbook->save();

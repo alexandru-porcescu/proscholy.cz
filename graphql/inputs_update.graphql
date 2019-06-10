@@ -94,6 +94,9 @@ input UpdateSongbookInput {
     name: String
     shortcut: String
     records: SyncSongbookRecordsForSongbookRelation
+    """ this is string because of the validation message """
+    songs_count: String @rules(apply: ["integer"], messages: { 
+            integer: "Zadejte číselnou hodnotu"})
 }
 
 input SyncSongbookRecordsForSongbookRelation {
@@ -109,25 +112,21 @@ input SyncSongbookRecordsForSongLyricRelation {
 input CreateSongbookRecordForSongbookInput {
   song_lyric_name: String!
   number: String
-  placeholder: String
 }
 
 input CreateSongbookRecordForSongLyricInput {
   songbook: String!
   number: String
-  placeholder: String
 }
 
 input SyncSongbookRecordForSongbookInput {
   song_lyric_id: ID!
   number: String
-  placeholder: String
 }
 
 input SyncSongbookRecordForSongLyricInput {
   songbook_id: ID!
   number: String
-  placeholder: String
 }
 
 input SyncMetadataItemsRelation {
